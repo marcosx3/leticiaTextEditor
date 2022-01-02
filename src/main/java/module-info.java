@@ -9,6 +9,7 @@ module com.sistemamos.leticia {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
+    requires java.desktop;
 
     opens com.sistemamos.leticia to javafx.fxml;
     exports com.sistemamos.leticia;

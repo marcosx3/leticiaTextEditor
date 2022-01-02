@@ -1,12 +1,15 @@
 package com.sistemamos.leticia.controller;
 
+import com.sistemamos.leticia.services.Alertas;
 import com.sistemamos.leticia.services.Arquivos;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Window;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.FileSystemAlreadyExistsException;
 
@@ -35,6 +38,14 @@ public class HomeController {
 
     @FXML
     private TextArea textArquivo;
+    @FXML
+    private AnchorPane telaInicial;
+
+    private Arquivos manipulacaoArquivo = new Arquivos();
+
+
+
+
 
     @FXML
     void btnNewWindow(ActionEvent event) {
@@ -53,12 +64,12 @@ public class HomeController {
 
     @FXML
     void newDocument(ActionEvent event) {
-
+            limparAreaTxt();
     }
 
     @FXML
-    void openFile(ActionEvent event) {
-
+    void openFile(ActionEvent event) throws FileNotFoundException {
+        textArquivo.setText(manipulacaoArquivo.openFile());
     }
 
     @FXML
@@ -69,17 +80,18 @@ public class HomeController {
     @FXML
     void saveFile(ActionEvent event) throws IOException {
        String arquivo = textArquivo.getText();
-        Arquivos manipulacaoArquivo = new Arquivos();
+
         try {
             manipulacaoArquivo.writerFile(arquivo);
-            Alert alertGravado = new Alert(Alert.AlertType.CONFIRMATION);
-            alertGravado.setTitle("Sucesso");
-            alertGravado.setContentText("Arquivo Salvo com Sucesso!!");
-            alertGravado.setHeaderText(null);
-            alertGravado.showAndWait();
+            Alertas sucesso = new Alertas();
+            sucesso.salvoComSucesso();
         } catch (FileSystemAlreadyExistsException e){
             System.out.println(e);
         }
+    }
+
+    private void limparAreaTxt(){
+        textArquivo.setText("");
     }
 
 }
